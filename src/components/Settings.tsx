@@ -17,6 +17,7 @@ type SettingsPropsType = {
 export const Settings = (props: SettingsPropsType) => {
 
 
+
     const maxValueChangeHandler = (maxNum: number) => {
         props.maxValueSet(maxNum)
     }
@@ -26,14 +27,15 @@ export const Settings = (props: SettingsPropsType) => {
     }
 
 
-    const maxValueIncorrectCases = props.maxValueIncorrectCases ? "input-error" : "input"
+    const maxValueIncorrectCasesStyle = props.maxValueIncorrectCases ? "input-error" : "input"
 
-    const startValueIncorrectCases = props.startValueIncorrectCases ? "input-error" : "input"
+    const startValueIncorrectCasesStyle = props.startValueIncorrectCases ? "input-error" : "input"
 
 
 
     const setClass = `button
     &{props.disabled ? 'disabled' : ''}`
+
 
 
     return (
@@ -46,10 +48,10 @@ export const Settings = (props: SettingsPropsType) => {
                     </div>
                     <div>
                         <SuperInput value={props.maxValue}
-                                    className={maxValueIncorrectCases}
+                                    className={maxValueIncorrectCasesStyle}
                                     callback={maxValueChangeHandler}/>
                         <SuperInput value={props.startValue}
-                                    className={startValueIncorrectCases}
+                                    className={startValueIncorrectCasesStyle}
                                     callback={startValueChangeHandler}/>
                     </div>
                 </div>

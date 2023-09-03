@@ -2,34 +2,65 @@ import React, {useEffect, useState} from "react";
 import './App.css';
 import {Counter} from "./components/Counter";
 import {Settings} from "./components/Settings";
+import {useDispatch, useSelector} from "react-redux";
+import {
+    incrementValueAC,
+    setErrorAC,
+    setMaxValueAC,
+    setResetCounterAC,
+    setStartValueAC
+} from "./state/counter-reducer";
+import {AppStateType} from "./state/store";
 
 
 function App() {
+    const maxValue = useSelector<AppStateType, number>(state => state.app.maxValue);
+    const startValue = useSelector<AppStateType, number>(state => state.app.startValue);
+    const counter = useSelector<AppStateType, number>(state => state.app.counter);
 
 
-    let [maxValue, setMaxValue] = useState<number>(5);
-    let [startValue, setStartValue] = useState<number>(0);
-    let [counter, setCounter] = useState<number | null>(startValue);
+    const dispatch = useDispatch();
 
     let [btnSetDisabled, setBtnSetDisabled] = useState<boolean>(false);
 
-    let [errorText, setErrorText] = useState<string | null>(null);
+
+    // useEffect(() => {
+    //     let maxValueString = localStorage.getItem("maxValue");
+    //     let startValueString = localStorage.getItem("startValue");
+    //     let counterValueString = localStorage.getItem("counterValue");
+    //     if (maxValueString && startValueString && counterValueString) {
+    //         setMaxValue(JSON.parse(maxValueString));
+    //         setStartValue(JSON.parse(startValueString));
+    //         setCounter(JSON.parse(counterValueString));
+    //     }
+    // }, [])
+
+    // useEffect(() => {
+    //     localStorage.setItem("counterValue", JSON.stringify(counter))
+    // }, [counter])
 
 
-    useEffect(() => {
-        let maxValueString = localStorage.getItem("maxValue");
-        let startValueString = localStorage.getItem("startValue");
-        let counterValueString = localStorage.getItem("counterValue");
-        if (maxValueString && startValueString && counterValueString) {
-            setMaxValue(JSON.parse(maxValueString));
-            setStartValue(JSON.parse(startValueString));
-            setCounter(JSON.parse(counterValueString));
-        }
-    }, [])
 
-    useEffect(() => {
-        localStorage.setItem("counterValue", JSON.stringify(counter))
-    }, [counter])
+
+    const increment = () => {
+            dispatch(incrementValueAC());
+    }
+
+    const reset = () => {
+        dispatch(setResetCounterAC());
+    }
+
+    const handleCorrectValueCondition = () => {
+        setBtnSetDisabled(false);
+        dispatch(setErrorAC("Enter values and press 'SET'"));
+
+    }
+
+    const handleIncorrectValueCondition = () => {
+        setBtnSetDisabled(true);
+        dispatch(setErrorAC('Incorrect value'));
+    }
+
 
     let maxValueIncorrectCases = maxValue <= 0
         || maxValue < startValue
@@ -41,53 +72,35 @@ function App() {
         || startValue === maxValue
 
 
-    const increment = () => {
-        if (counter && counter < maxValue) {
-            setCounter(counter + 1)
-        }
-    }
-
-    const reset = () => {
-        setCounter(startValue)
-    }
-
-    const handleCorrectValueCondition = () => {
-        setBtnSetDisabled(false);
-        setErrorText("Enter values and press 'SET'");
-    }
-
-    const handleIncorrectValueCondition = () => {
-        setBtnSetDisabled(true);
-        setErrorText("Incorrect value");
-    }
-
 
     const maxValueSet = (maxNum: number) => {
         if (!maxValueIncorrectCases && maxNum.toString().length < 9) {
-            setMaxValue(maxNum)
+            dispatch(setMaxValueAC(maxNum));
             handleCorrectValueCondition();
             localStorage.setItem('maxValue', JSON.stringify(maxNum))
         } else {
-            setMaxValue(maxNum);
+            dispatch(setMaxValueAC(maxNum));
             handleIncorrectValueCondition();
         }
+        dispatch(setMaxValueAC(maxNum));
     }
 
     const startValueSet = (startNum: number) => {
         if (!startValueIncorrectCases && startNum.toString().length < 9) {
-            setStartValue(startNum);
+            dispatch(setStartValueAC(startNum));
             handleCorrectValueCondition();
-            localStorage.setItem('startValue', JSON.stringify(startNum))
+            localStorage.setItem("startValue", JSON.stringify(startNum))
         } else {
-            setStartValue(startNum);
+            dispatch(setStartValueAC(startNum));
             handleIncorrectValueCondition();
         }
     }
 
+
     const setCounterValue = () => {
-        setCounter(startValue)
-        setBtnSetDisabled(true)
-        setErrorText(null);
+        dispatch(setResetCounterAC());
+        setBtnSetDisabled(true);
+        dispatch(setErrorAC(null));
     }
 
 
@@ -102,17 +115,18 @@ function App() {
                 maxValueSet={maxValueSet}
                 startValueSet={startValueSet}
                 setCounterValue={setCounterValue}
-                btnSetDisabled={btnSetDisabled}
                 maxValueIncorrectCases={maxValueIncorrectCases}
                 startValueIncorrectCases={startValueIncorrectCases}
+                btnSetDisabled={btnSetDisabled}
             />
 
-            <Counter startValue={startValue}
-                     maxValue={maxValue}
-                     increment={increment}
-                     reset={reset}
-                     counter={counter}
-                     errorText={errorText}/>
+            <Counter
+                startValue={startValue}
+                maxValue={maxValue}
+                counter={counter}
+                increment={increment}
+                reset={reset}
+            />
         </div>
     )
 }

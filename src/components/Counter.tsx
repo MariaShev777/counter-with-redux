@@ -1,31 +1,36 @@
 import React from "react";
 import {SuperButton} from "./SuperButton";
+import {useSelector} from "react-redux";
+import {AppStateType} from "../state/store";
+import {incrementValueAC} from "../state/counter-reducer";
 
 
 
 type CounterPropsType = {
     maxValue: number
     startValue: number
+    counter: number
     increment: () => void
     reset: () => void
-    counter: number | null
-    errorText: string | null
+
 
 }
 
 export const Counter = (props: CounterPropsType) => {
 
 
+    const error = useSelector<AppStateType, null | string>(state => state.app.error);
 
-    const incDisabled = (props.counter === props.maxValue || props.errorText === "Incorrect value")
-    const resetDisabled = (props.counter === props.startValue || props.errorText === "Incorrect value")
 
-    const errorClass = (props.errorText === "Incorrect value" ? "error-text-in-red-display" : "error-text-display")
+
+    const incDisabled = (props.counter === props.maxValue || error === "Incorrect value")
+    const resetDisabled = (props.counter === props.startValue || error === "Incorrect value")
+
+    const errorClass = (error === "Incorrect value" ? "error-text-in-red-display" : "error-text-display")
     const displayClass = (props.counter === props.maxValue ? "counter-error" : "counter")
 
     const incClass = `button
     ${incDisabled ? 'disabled' : ''}`
-
 
     const resetClass = `button
     ${resetDisabled ? 'disabled' : ''}`
@@ -36,7 +41,7 @@ export const Counter = (props: CounterPropsType) => {
             <div className="container">
 
                 <div className="display">
-                    {props.errorText ? <div className={errorClass}>{props.errorText}</div> :
+                    {error ? <div className={errorClass}>{error}</div> :
                         <div className={displayClass}>{props.counter}</div>}
                 </div>
 
