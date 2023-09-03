@@ -6,6 +6,7 @@ import {Settings} from "./components/Settings";
 
 function App() {
 
+
     let [maxValue, setMaxValue] = useState<number>(5);
     let [startValue, setStartValue] = useState<number>(0);
     let [counter, setCounter] = useState<number | null>(startValue);
