@@ -3,21 +3,13 @@ import './App.css';
 import {Counter} from "./components/Counter";
 import {Settings} from "./components/Settings";
 import {useDispatch, useSelector} from "react-redux";
-import {
-    incrementValueAC,
-    setErrorAC,
-    setMaxValueAC,
-    setResetCounterAC,
-    setStartValueAC
-} from "./state/counter-reducer";
+import {setError, setMaxValue, setResetCounter, setStartValue} from "./state/counter-reducer";
 import {AppStateType} from "./state/store";
 
 
 function App() {
     const maxValue = useSelector<AppStateType, number>(state => state.app.maxValue);
     const startValue = useSelector<AppStateType, number>(state => state.app.startValue);
-    const counter = useSelector<AppStateType, number>(state => state.app.counter);
-
 
     const dispatch = useDispatch();
 
@@ -41,67 +33,61 @@ function App() {
 
 
 
-
-    const increment = () => {
-            dispatch(incrementValueAC());
-    }
-
-    const reset = () => {
-        dispatch(setResetCounterAC());
-    }
-
-    const handleCorrectValueCondition = () => {
+    const handleCorrectValues = () => {
         setBtnSetDisabled(false);
-        dispatch(setErrorAC("Enter values and press 'SET'"));
+        dispatch(setError("Enter values and press 'SET'"));
 
     }
 
-    const handleIncorrectValueCondition = () => {
+    const handleIncorrectValues = () => {
+        dispatch(setError('Incorrect value'));
         setBtnSetDisabled(true);
-        dispatch(setErrorAC('Incorrect value'));
+
     }
 
 
-    let maxValueIncorrectCases = maxValue <= 0
-        || maxValue < startValue
-        || maxValue === startValue
+    const maxValueCorrectCases = maxValue > 0
+        && maxValue > startValue
+        // || maxValue !== startValue
 
 
-    let startValueIncorrectCases = startValue < 0
-        || startValue > maxValue
-        || startValue === maxValue
+
+    const startValueCorrectCases = startValue > 0
+        && startValue < maxValue
 
 
 
     const maxValueSet = (maxNum: number) => {
-        if (!maxValueIncorrectCases && maxNum.toString().length < 9) {
-            dispatch(setMaxValueAC(maxNum));
-            handleCorrectValueCondition();
+        if (maxValueCorrectCases && maxNum.toString().length < 7) {
+            dispatch(setMaxValue(maxNum));
+            handleCorrectValues();
             localStorage.setItem('maxValue', JSON.stringify(maxNum))
         } else {
-            dispatch(setMaxValueAC(maxNum));
-            handleIncorrectValueCondition();
+            handleIncorrectValues();
+            dispatch(setMaxValue(maxNum));
+
         }
-        dispatch(setMaxValueAC(maxNum));
     }
 
     const startValueSet = (startNum: number) => {
-        if (!startValueIncorrectCases && startNum.toString().length < 9) {
-            dispatch(setStartValueAC(startNum));
-            handleCorrectValueCondition();
+        if (startValueCorrectCases && startNum.toString().length < 7) {
+            dispatch(setStartValue(startNum));
+            handleCorrectValues();
             localStorage.setItem("startValue", JSON.stringify(startNum))
         } else {
-            dispatch(setStartValueAC(startNum));
-            handleIncorrectValueCondition();
+            dispatch(setStartValue(startNum));
+            handleIncorrectValues();
         }
     }
 
 
     const setCounterValue = () => {
-        dispatch(setResetCounterAC());
+        dispatch(setResetCounter());
         setBtnSetDisabled(true);
-        dispatch(setErrorAC(null));
+        dispatch(setError(null));
     }
+
+
 
 
 
@@ -115,17 +101,14 @@ function App() {
                 maxValueSet={maxValueSet}
                 startValueSet={startValueSet}
                 setCounterValue={setCounterValue}
-                maxValueIncorrectCases={maxValueIncorrectCases}
-                startValueIncorrectCases={startValueIncorrectCases}
+                maxValueCorrectCases={maxValueCorrectCases}
+                startValueCorrectCases={startValueCorrectCases}
                 btnSetDisabled={btnSetDisabled}
             />
 
             <Counter
                 startValue={startValue}
                 maxValue={maxValue}
-                counter={counter}
-                increment={increment}
-                reset={reset}
             />
         </div>
     )

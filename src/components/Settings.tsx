@@ -10,12 +10,11 @@ type SettingsPropsType = {
     startValueSet: (startNum: number) => void
     setCounterValue: () => void
     btnSetDisabled: boolean
-    maxValueIncorrectCases: boolean
-    startValueIncorrectCases: boolean
+    maxValueCorrectCases: boolean
+    startValueCorrectCases: boolean
 }
 
 export const Settings = (props: SettingsPropsType) => {
-
 
 
     const maxValueChangeHandler = (maxNum: number) => {
@@ -27,14 +26,14 @@ export const Settings = (props: SettingsPropsType) => {
     }
 
 
-    const maxValueIncorrectCasesStyle = props.maxValueIncorrectCases ? "input-error" : "input"
+    const maxValueIncorrectCasesStyle = props.maxValueCorrectCases ? "input" : "input-error"
 
-    const startValueIncorrectCasesStyle = props.startValueIncorrectCases ? "input-error" : "input"
+    const startValueIncorrectCasesStyle = props.startValueCorrectCases ? "input" : "input-error"
 
 
 
     const setClass = `button
-    &{props.disabled ? 'disabled' : ''}`
+    ${props.btnSetDisabled ? 'disabled' : ''}`
 
 
 
