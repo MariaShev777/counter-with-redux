@@ -1,20 +1,13 @@
 import React from "react";
-import {SuperButton} from "./SuperButton";
+import {SuperButton} from "./common/SuperButton";
 import {useDispatch, useSelector} from "react-redux";
 import {AppStateType} from "../state/store";
-import {incrementValue, setResetCounter} from "../state/counter-reducer";
+import {incrementValue, InitialStateType, setResetCounter} from "../state/counter-reducer";
 
 
 
-type CounterPropsType = {
-    maxValue: number
-    startValue: number
-}
-
-export const Counter = (props: CounterPropsType) => {
-    const counter = useSelector<AppStateType, number>(state => state.app.counter);
-    const error = useSelector<AppStateType, null | string>(state => state.app.error);
-
+export const Counter = () => {
+    const state = useSelector<AppStateType, InitialStateType>(state => state.app);
     const dispatch = useDispatch();
 
     const increment = () => {
@@ -25,18 +18,22 @@ export const Counter = (props: CounterPropsType) => {
         dispatch(setResetCounter());
     }
 
+    // const incDisabled = state.counter === state.maxValue || state.error === "Incorrect value" || state.error === "Enter values and press 'SET'";
+    // const resetDisabled = state.counter === state.startValue || state.error === "Incorrect value" || state.error === "Enter values and press 'SET'";
 
-    const incDisabled = (counter === props.maxValue || error === "Incorrect value")
-    const resetDisabled = (counter === props.startValue || error === "Incorrect value")
 
-    const errorClass = (error === "Incorrect value" ? "error-text-in-red-display" : "error-text-display")
-    const displayClass = (counter === props.maxValue ? "counter-error" : "counter")
+    const _Disabled = (value: number) => state.counter === value || state.error === "Incorrect value" || state.error === "Enter values and press 'SET'"
+
+
+    const errorClass = (state.error === "Incorrect value" ? "error-text-in-red-display" : "error-text-display")
+    const displayClass = (state.counter === state.maxValue ? "counter-error" : "counter")
+
 
     const incClass = `button
-    ${incDisabled ? 'disabled' : ''}`
+    ${_Disabled(state.maxValue) ? "disabled" : ""}`
 
     const resetClass = `button
-    ${resetDisabled ? 'disabled' : ''}`
+    ${_Disabled(state.startValue) ? "disabled" : ""}`
 
 
     return (
@@ -44,19 +41,21 @@ export const Counter = (props: CounterPropsType) => {
             <div className="container">
 
                 <div className="display">
-                    {error ? <div className={errorClass}>{error}</div> :
-                        <div className={displayClass}>{counter}</div>}
+                    {state.error
+                        ? <div className={errorClass}>{state.error}</div>
+                        : <div className={displayClass}>{state.counter}</div>}
                 </div>
 
                 <div className="buttons-display">
                     <SuperButton name={'INC'}
                                  callback={increment}
                                  className={incClass}
-                                 disabled={incDisabled} />
+                                 disabled={_Disabled(state.maxValue)}
+                    />
                     <SuperButton name={'RESET'}
                                  callback={reset}
                                  className={resetClass}
-                                 disabled={resetDisabled} />
+                                 disabled={_Disabled(state.startValue)} />
                 </div>
 
             </div>

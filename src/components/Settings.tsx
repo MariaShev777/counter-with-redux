@@ -1,41 +1,65 @@
-import React from "react";
-import {SuperButton} from "./SuperButton";
-import {SuperInput} from "./SuperInput";
+import React, {useState} from "react";
+import {SuperButton} from "./common/SuperButton";
+import {SuperInput} from "./common/SuperInput";
+import {useDispatch, useSelector} from "react-redux";
+import {AppStateType} from "../state/store";
+import { setError, setMaxValue, setResetCounter, setStartValue} from "../state/counter-reducer";
 
 
-type SettingsPropsType = {
-    maxValue: number
-    startValue: number
-    maxValueSet: (maxNum: number) => void
-    startValueSet: (startNum: number) => void
-    setCounterValue: () => void
-    btnSetDisabled: boolean
-    maxValueCorrectCases: boolean
-    startValueCorrectCases: boolean
-}
+export const Settings = () => {
+    const maxValue = useSelector<AppStateType, number>(state => state.app.maxValue);
+    const startValue = useSelector<AppStateType, number>(state => state.app.startValue);
 
-export const Settings = (props: SettingsPropsType) => {
+    let [buttonDisabled, setButtonDisabled] = useState(false);
 
 
-    const maxValueChangeHandler = (maxNum: number) => {
-        props.maxValueSet(maxNum)
+    const dispatch = useDispatch();
+
+    const maxValueCorrectCases = maxValue > 0 && maxValue > startValue;
+    const startValueCorrectCases = startValue >= 0 && startValue < maxValue;
+
+    const allCorrectValueCases = maxValueCorrectCases && startValueCorrectCases;
+
+
+    const maxValueCorrectCasesStyle = maxValueCorrectCases ? "input" : "input-error"
+    const startValueCorrectCasesStyle = startValueCorrectCases ? "input" : "input-error"
+
+
+
+    const maxValueSet = (maxNum: number) => {
+        setButtonDisabled(false);
+        dispatch(setMaxValue(maxNum));
+        if (maxNum > 0 && maxNum > startValue && startValueCorrectCases)  {
+            dispatch(setError("Enter values and press 'SET'"));
+        } else {
+            setButtonDisabled(true);
+            dispatch(setError("Incorrect value"));
+        }
+
     }
 
-    const startValueChangeHandler = (startNum: number) => {
-        props.startValueSet(startNum)
+    const startValueSet = (startNum: number) => {
+        setButtonDisabled(false);
+        dispatch(setStartValue(startNum));
+        if (startNum >= 0 && startNum < maxValue) {
+            dispatch(setError("Enter values and press 'SET'"));
+        } else {
+            setButtonDisabled(true);
+            dispatch(setError("Incorrect value"));
+        }
     }
 
-
-    const maxValueIncorrectCasesStyle = props.maxValueCorrectCases ? "input" : "input-error"
-
-    const startValueIncorrectCasesStyle = props.startValueCorrectCases ? "input" : "input-error"
-
-
+    const setCounterValue = () => {
+        allCorrectValueCases &&
+        dispatch(setResetCounter());
+        dispatch(setError(""));
+        setButtonDisabled(true);
+        localStorage.setItem("startValue", JSON.stringify(startValue))
+        localStorage.setItem("maxValue", JSON.stringify(maxValue))
+    }
 
     const setClass = `button
-    ${props.btnSetDisabled ? 'disabled' : ''}`
-
-
+    ${allCorrectValueCases ? "button" : "disabled"}`
 
     return (
         <div>
@@ -46,19 +70,20 @@ export const Settings = (props: SettingsPropsType) => {
                         Start value:
                     </div>
                     <div>
-                        <SuperInput value={props.maxValue}
-                                    className={maxValueIncorrectCasesStyle}
-                                    callback={maxValueChangeHandler}/>
-                        <SuperInput value={props.startValue}
-                                    className={startValueIncorrectCasesStyle}
-                                    callback={startValueChangeHandler}/>
+                        <SuperInput value={maxValue}
+                                    className={maxValueCorrectCasesStyle}
+                                    callback={maxValueSet}/>
+                        <SuperInput value={startValue}
+                                    className={startValueCorrectCasesStyle}
+                                    callback={startValueSet}/>
                     </div>
                 </div>
                 <div className="buttons-display">
                     <SuperButton name={"SET"}
-                                 callback={props.setCounterValue}
+                                 callback={setCounterValue}
                                  className={setClass}
-                                 disabled={props.btnSetDisabled}/>
+                                 disabled={ buttonDisabled }
+                    />
                 </div>
 
             </div>

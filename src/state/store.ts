@@ -1,5 +1,6 @@
-import {combineReducers, legacy_createStore} from "redux";
+import {combineReducers, compose, legacy_createStore} from "redux";
 import {counterReducer} from "./counter-reducer";
+
 
 const rootReducer = combineReducers({
     app: counterReducer

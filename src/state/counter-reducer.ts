@@ -1,15 +1,15 @@
-type InitialStateType = {
+export type InitialStateType = {
     maxValue: number
     startValue: number
     counter: number
-    error: null | string
+    error: string
 }
 
 const initialState = {
     maxValue: 5,
     startValue: 0,
     counter: 0,
-    error: null
+    error: ''
 }
 
 export type ActionsType =
@@ -23,7 +23,7 @@ export type ActionsType =
 export const counterReducer = (state:InitialStateType = initialState, action: ActionsType): InitialStateType => {
     switch (action.type) {
         case 'INCREMENT-VALUE': {
-            return {...state, counter: ++state.counter}
+            return {...state, counter: state.counter + 1}
         }
         case 'SET-MAX-VALUE': {
             return {...state, maxValue: action.payload.maxNum}
@@ -56,5 +56,5 @@ export const setStartValue = (startNum: number) => ({type: 'SET-START-VALUE', pa
 
 export const setResetCounter = () => ({type: 'SET-RESET-COUNTER'} as const);
 
-export const setError = (error: null | string) => ({type: 'SET-ERROR', payload: {error}} as const);
+export const setError = (error: string) => ({type: 'SET-ERROR', payload: {error}} as const);
 
