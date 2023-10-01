@@ -54,8 +54,6 @@ export const Settings = () => {
         dispatch(setResetCounter());
         dispatch(setError(""));
         setButtonDisabled(true);
-        localStorage.setItem("startValue", JSON.stringify(startValue))
-        localStorage.setItem("maxValue", JSON.stringify(maxValue))
     }
 
     const setClass = `button

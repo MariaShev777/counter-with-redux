@@ -11,7 +11,7 @@ export const Counter = () => {
     const dispatch = useDispatch();
 
     const increment = () => {
-        dispatch(incrementValue());
+        dispatch(incrementValue()); //AC
     }
 
     const reset = () => {
