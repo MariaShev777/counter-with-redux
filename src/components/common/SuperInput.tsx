@@ -1,5 +1,3 @@
-//стиль hover над кнопками
-
 import React, {ChangeEvent} from "react";
 
 

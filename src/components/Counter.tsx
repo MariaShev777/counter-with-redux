@@ -11,29 +11,28 @@ export const Counter = () => {
     const dispatch = useDispatch();
 
     const increment = () => {
-        dispatch(incrementValue()); //AC
+        dispatch(incrementValue());
     }
 
     const reset = () => {
         dispatch(setResetCounter());
     }
 
-    // const incDisabled = state.counter === state.maxValue || state.error === "Incorrect value" || state.error === "Enter values and press 'SET'";
-    // const resetDisabled = state.counter === state.startValue || state.error === "Incorrect value" || state.error === "Enter values and press 'SET'";
 
-
-    const _Disabled = (value: number) => state.counter === value || state.error === "Incorrect value" || state.error === "Enter values and press 'SET'"
+    const setDisabledStyle = (value: number) => state.counter === value || state.error !== '';
 
 
     const errorClass = (state.error === "Incorrect value" ? "error-text-in-red-display" : "error-text-display")
     const displayClass = (state.counter === state.maxValue ? "counter-error" : "counter")
 
+    const isMaxValue = setDisabledStyle(state.maxValue)
+    const isStartValue = setDisabledStyle(state.startValue)
 
     const incClass = `button
-    ${_Disabled(state.maxValue) ? "disabled" : ""}`
+    ${isMaxValue ? "disabled" : ""}`
 
     const resetClass = `button
-    ${_Disabled(state.startValue) ? "disabled" : ""}`
+    ${isStartValue ? "disabled" : ""}`
 
 
     return (
@@ -50,12 +49,12 @@ export const Counter = () => {
                     <SuperButton name={'INC'}
                                  callback={increment}
                                  className={incClass}
-                                 disabled={_Disabled(state.maxValue)}
+                                 disabled={isMaxValue}
                     />
                     <SuperButton name={'RESET'}
                                  callback={reset}
                                  className={resetClass}
-                                 disabled={_Disabled(state.startValue)} />
+                                 disabled={isStartValue} />
                 </div>
 
             </div>

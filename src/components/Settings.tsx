@@ -3,7 +3,7 @@ import {SuperButton} from "./common/SuperButton";
 import {SuperInput} from "./common/SuperInput";
 import {useDispatch, useSelector} from "react-redux";
 import {AppStateType} from "../state/store";
-import { setError, setMaxValue, setResetCounter, setStartValue} from "../state/counter-reducer";
+import {setError, setMaxValue, setResetCounter, setStartValue} from "../state/counter-reducer";
 
 
 export const Settings = () => {
@@ -12,52 +12,40 @@ export const Settings = () => {
 
     let [buttonDisabled, setButtonDisabled] = useState(false);
 
-
     const dispatch = useDispatch();
 
-    const maxValueCorrectCases = maxValue > 0 && maxValue > startValue;
-    const startValueCorrectCases = startValue >= 0 && startValue < maxValue;
+    const maxValueIncorrectCasesStyle = !(maxValue > 0 && maxValue > startValue) ? "input-error" : "";
+    const startValueIncorrectCasesStyle = !(startValue >= 0 && startValue < maxValue) ? "input-error" : "";
 
-    const allCorrectValueCases = maxValueCorrectCases && startValueCorrectCases;
-
-
-    const maxValueCorrectCasesStyle = maxValueCorrectCases ? "input" : "input-error"
-    const startValueCorrectCasesStyle = startValueCorrectCases ? "input" : "input-error"
-
-
-
-    const maxValueSet = (maxNum: number) => {
-        setButtonDisabled(false);
-        dispatch(setMaxValue(maxNum));
-        if (maxNum > 0 && maxNum > startValue && startValueCorrectCases)  {
+    const isError = (isValid: boolean) => {
+        if (isValid) {
             dispatch(setError("Enter values and press 'SET'"));
         } else {
             setButtonDisabled(true);
             dispatch(setError("Incorrect value"));
         }
+    }
 
+    const maxValueSet = (maxNum: number) => {
+        setButtonDisabled(false);
+        dispatch(setMaxValue(maxNum));
+        isError(maxNum > 0 && maxNum > startValue && startValue >= 0);
     }
 
     const startValueSet = (startNum: number) => {
         setButtonDisabled(false);
         dispatch(setStartValue(startNum));
-        if (startNum >= 0 && startNum < maxValue) {
-            dispatch(setError("Enter values and press 'SET'"));
-        } else {
-            setButtonDisabled(true);
-            dispatch(setError("Incorrect value"));
-        }
+        isError(startNum >= 0 && startNum < maxValue);
     }
 
     const setCounterValue = () => {
-        allCorrectValueCases &&
         dispatch(setResetCounter());
         dispatch(setError(""));
         setButtonDisabled(true);
     }
 
     const setClass = `button
-    ${allCorrectValueCases ? "button" : "disabled"}`
+    ${!maxValueIncorrectCasesStyle && !startValueIncorrectCasesStyle ? "button" : "disabled"}`
 
     return (
         <div>
@@ -69,10 +57,10 @@ export const Settings = () => {
                     </div>
                     <div>
                         <SuperInput value={maxValue}
-                                    className={maxValueCorrectCasesStyle}
+                                    className={`input ${maxValueIncorrectCasesStyle}`}
                                     callback={maxValueSet}/>
                         <SuperInput value={startValue}
-                                    className={startValueCorrectCasesStyle}
+                                    className={`input ${startValueIncorrectCasesStyle}`}
                                     callback={startValueSet}/>
                     </div>
                 </div>
@@ -80,7 +68,7 @@ export const Settings = () => {
                     <SuperButton name={"SET"}
                                  callback={setCounterValue}
                                  className={setClass}
-                                 disabled={ buttonDisabled }
+                                 disabled={buttonDisabled}
                     />
                 </div>
 
