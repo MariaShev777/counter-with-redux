@@ -22,5 +22,3 @@ store.subscribe(throttle(() => {
 
 export type AppStateType = ReturnType<typeof rootReducer>
 
-//@ts-ignore
-window.store = store;
