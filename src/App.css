@@ -25,7 +25,7 @@ button {
 
 .app.light {
     --main-color: #cdc9d9;
-    --border-color: #1a152c;
+    --border-color: #2c2848;
     --bgc-display: rgba(178, 173, 173, 0.78);
     --settings-text-color: #1a152c;
     --counter-text-color: #1a152c;
@@ -38,6 +38,7 @@ button {
     --bgc-display: rgba(82, 78, 78, 0.78);
     --settings-text-color: #ffb803;
     --counter-text-color: #ffffff;
+    --display-shadow: #1a152c;
 }
 
 .dark {

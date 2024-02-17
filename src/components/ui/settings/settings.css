@@ -1,7 +1,7 @@
 .settings-display {
     display: flex;
     background-color: var(--bgc-display);
-    box-shadow: inset 0 0 5px 1px var(--display-shadow);
+    box-shadow: inset 0 0 5px 2px var(--display-shadow);
     margin: 20px auto;
     width: 350px;
     height: 180px;
