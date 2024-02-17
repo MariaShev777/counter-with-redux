@@ -1,15 +1,18 @@
 import React from "react";
 import './App.css';
-import {Counter} from "./components/Counter";
-import {Settings} from "./components/Settings";
+import {Counter} from "./components/ui/counter/Counter";
+import {Settings} from "./components/ui/settings/Settings";
 
 
 function App() {
     return (
-        <div className="App">
-            <Settings/>
-            <Counter/>
-        </div>
+        <>
+            <div className="app">
+                <Settings/>
+                <Counter/>
+            </div>
+            <button className={'themeButton'}></button>
+        </>
     )
 }
 

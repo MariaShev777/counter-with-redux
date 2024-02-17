@@ -1,9 +1,10 @@
 import React, {useState} from "react";
-import {SuperButton} from "./common/SuperButton";
-import {SuperInput} from "./common/SuperInput";
+import {SuperButton} from "../../common/SuperButton";
+import {SuperInput} from "../../common/SuperInput";
 import {useDispatch, useSelector} from "react-redux";
-import {AppStateType} from "../state/store";
-import {setError, setMaxValue, setResetCounter, setStartValue} from "../state/counter-reducer";
+import {AppStateType} from "../../../state/store";
+import { setError, setMaxValue, setResetCounter, setStartValue} from "../../../state/counter-reducer";
+import "./settings.css"
 
 
 export const Settings = () => {
@@ -45,35 +46,31 @@ export const Settings = () => {
     }
 
     const setClass = `button
-    ${!maxValueIncorrectCasesStyle && !startValueIncorrectCasesStyle ? "button" : "disabled"}`
+    ${maxValueIncorrectCasesStyle && startValueIncorrectCasesStyle ? "disabled" : "button"}`
 
     return (
-        <div>
-            <div className="container">
-                <div className={"settings-display"}>
-                    <div>
-                        Max value:
-                        Start value:
-                    </div>
-                    <div>
-                        <SuperInput value={maxValue}
-                                    className={`input ${maxValueIncorrectCasesStyle}`}
-                                    callback={maxValueSet}/>
-                        <SuperInput value={startValue}
-                                    className={`input ${startValueIncorrectCasesStyle}`}
-                                    callback={startValueSet}/>
-                    </div>
+        <div className="container">
+            <div className={"settings-display"}>
+                <div>
+                    Max value:
+                    Start value:
                 </div>
-                <div className="buttons-display">
-                    <SuperButton name={"SET"}
-                                 callback={setCounterValue}
-                                 className={setClass}
-                                 disabled={buttonDisabled}
-                    />
+                <div>
+                    <SuperInput value={maxValue}
+                                className={`input ${maxValueIncorrectCasesStyle}`}
+                                callback={maxValueSet}/>
+                    <SuperInput value={startValue}
+                                className={`input ${startValueIncorrectCasesStyle}`}
+                                callback={startValueSet}/>
                 </div>
-
+            </div>
+            <div className="buttons-display">
+                <SuperButton name={"SET"}
+                             callback={setCounterValue}
+                             className={setClass}
+                             disabled={buttonDisabled}
+                />
             </div>
         </div>
     );
-
 };

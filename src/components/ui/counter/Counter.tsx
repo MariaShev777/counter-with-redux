@@ -1,14 +1,14 @@
 import React from "react";
-import {SuperButton} from "./common/SuperButton";
+import {SuperButton} from "../../common/SuperButton";
 import {useDispatch, useSelector} from "react-redux";
-import {AppStateType} from "../state/store";
-import {incrementValue, InitialStateType, setResetCounter} from "../state/counter-reducer";
-
+import {AppStateType} from "../../../state/store";
+import {incrementValue, InitialStateType, setResetCounter} from "../../../state/counter-reducer";
+import "./counter.css"
 
 
 export const Counter = () => {
-    const state = useSelector<AppStateType, InitialStateType>(state => state.app);
     const dispatch = useDispatch();
+    const state = useSelector<AppStateType, InitialStateType>(state => state.app);
 
     const increment = () => {
         dispatch(incrementValue());
@@ -18,9 +18,7 @@ export const Counter = () => {
         dispatch(setResetCounter());
     }
 
-
     const setDisabledStyle = (value: number) => state.counter === value || state.error !== '';
-
 
     const errorClass = (state.error === "Incorrect value" ? "error-text-in-red-display" : "error-text-display")
     const displayClass = (state.counter === state.maxValue ? "counter-error" : "counter")
@@ -36,28 +34,23 @@ export const Counter = () => {
 
 
     return (
-        <div>
             <div className="container">
-
-                <div className="display">
+                <div className="counter-display">
                     {state.error
                         ? <div className={errorClass}>{state.error}</div>
                         : <div className={displayClass}>{state.counter}</div>}
                 </div>
-
                 <div className="buttons-display">
-                    <SuperButton name={'INC'}
+                    <SuperButton name={"INC"}
                                  callback={increment}
                                  className={incClass}
                                  disabled={isMaxValue}
                     />
-                    <SuperButton name={'RESET'}
+                    <SuperButton name={"RESET"}
                                  callback={reset}
                                  className={resetClass}
-                                 disabled={isStartValue} />
+                                 disabled={isStartValue}/>
                 </div>
-
             </div>
-        </div>
     );
 };
