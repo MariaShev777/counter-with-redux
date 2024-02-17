@@ -1,15 +1,17 @@
 {
   "files": {
-    "main.css": "/counter-with-redux/static/css/main.23233d92.css",
-    "main.js": "/counter-with-redux/static/js/main.0f6017fa.js",
+    "main.css": "/counter-with-redux/static/css/main.0b28d73e.css",
+    "main.js": "/counter-with-redux/static/js/main.82f1c8b5.js",
     "static/js/787.d1cc116e.chunk.js": "/counter-with-redux/static/js/787.d1cc116e.chunk.js",
+    "static/media/night-svgrepo-com.svg": "/counter-with-redux/static/media/night-svgrepo-com.81a882b7b588d845d74d.svg",
+    "static/media/sun-svgrepo-com.svg": "/counter-with-redux/static/media/sun-svgrepo-com.40ec893b67cb8af9e837.svg",
     "index.html": "/counter-with-redux/index.html",
-    "main.23233d92.css.map": "/counter-with-redux/static/css/main.23233d92.css.map",
-    "main.0f6017fa.js.map": "/counter-with-redux/static/js/main.0f6017fa.js.map",
+    "main.0b28d73e.css.map": "/counter-with-redux/static/css/main.0b28d73e.css.map",
+    "main.82f1c8b5.js.map": "/counter-with-redux/static/js/main.82f1c8b5.js.map",
     "787.d1cc116e.chunk.js.map": "/counter-with-redux/static/js/787.d1cc116e.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.23233d92.css",
-    "static/js/main.0f6017fa.js"
+    "static/css/main.0b28d73e.css",
+    "static/js/main.82f1c8b5.js"
   ]
 }
