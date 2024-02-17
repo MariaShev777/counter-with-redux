@@ -1,10 +1,8 @@
-import {Dispatch} from "redux";
-
 const initialState = {
     maxValue: 5,
     startValue: 0,
     counter: 0,
-    error: ''
+    error: '',
 }
 
 export const counterReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
@@ -40,15 +38,6 @@ export const setResetCounter = () => ({type: 'SET-RESET-COUNTER'} as const);
 
 export const setError = (error: string) => ({type: 'SET-ERROR', payload: {error}} as const);
 
-
-export const saveDataIntoLS = (key: string, value: string) => (dispatch: Dispatch) => {
-    localStorage.setItem(key, JSON.stringify(value))
-}
-
-export const getDataFromLS = (key: string) => () => {
-    localStorage.getItem(key)
-
-}
 
 export type InitialStateType = {
     maxValue: number
